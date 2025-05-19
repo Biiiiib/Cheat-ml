@@ -1,0 +1,71 @@
+package com.android.support;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.text.Html;
+import android.widget.Toast;
+import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+public class MainActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+		Main.StartWithoutPermission(this);
+
+        setContentView(R.layout.activity_main);
+
+
+
+
+        // Example usage: Check if the app is expired and show the dialog if it is
+        if (isAppExpired("SUNNY", LocalDate.of(2024, 12, 25))) {
+            showExpiredAppDialog();
+        }
+    }
+
+    private boolean isAppExpired(String appName, LocalDate expirationDate) {
+        LocalDate currentDate = LocalDate.now();
+        return expirationDate.isBefore(currentDate) || expirationDate.isEqual(currentDate);
+    }
+
+    private void showExpiredAppDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("App Expiration Notice")
+
+			.setMessage("We're sorry to inform you that this app has expired and is no longer supported. To continue enjoying our services, please update to the latest version available on the Telegram. Thank you for your understanding and support.")
+
+			.setPositiveButton("EXIT", new DialogInterface.OnClickListener() {
+
+				public void onClick(DialogInterface dialog, int id) {
+
+					System.exit(0);     
+					//	dialog.dismiss();
+				}
+			});
+
+
+
+
+		builder.setCancelable(false);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+
+}
+
+
+
+	
+

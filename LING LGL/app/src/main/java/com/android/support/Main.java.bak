@@ -1,0 +1,363 @@
+package com.android.support;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import java.io.IOException;
+import android.widget.Toast;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.Settings;
+import android.text.InputType;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import java.util.concurrent.TimeUnit;
+import android.net.Uri;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.StrictMode;
+import android.provider.Settings;
+import android.util.Base64;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import org.json.JSONObject;
+import android.view.WindowManager;
+import android.text.Html;
+import android.graphics.drawable.GradientDrawable;
+import android.content.res.ColorStateList;
+import android.widget.CompoundButton;
+import android.graphics.drawable.GradientDrawable;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
+import android.content.SharedPreferences;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.TimeAnimator;
+import android.animation.ValueAnimator;
+
+public class Main {
+	static native String Check(Context context, String user_key);
+	static SharedPreferences mPrefs;
+    //Load lib
+    static {
+        // When you change the lib name, change also on Android.mk file
+        // Both must have same name
+        System.loadLibrary("client_c++");
+    }
+
+    private static native void CheckOverlayPermission(Context context);
+
+    public static void StartWithoutPermission(final Context context) {
+		int SDK_INT = android.os.Build.VERSION.SDK_INT;
+		if (SDK_INT > 8) {
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
+			StrictMode.setThreadPolicy(policy);             
+
+
+			final SharedPreferences sharedPreferences = context.getSharedPreferences("SavePref", 0);
+			String struser = sharedPreferences.getString("Pass", null);
+			Boolean rememberMe = sharedPreferences.getBoolean("RememberMe", false);
+
+
+			//Create LinearLayout
+			LinearLayout linearLayout = new LinearLayout(context);
+			linearLayout.setLayoutParams(new LinearLayout.LayoutParams(-2, -2));
+			linearLayout.setOrientation(LinearLayout.VERTICAL);
+			linearLayout.setGravity(Gravity.CENTER);
+			//  linearLayout.setBackgroundColor(Color.parseColor("#ffbfb9b6"));
+			linearLayout.setPadding(6, 5, 6, 5);
+
+
+			TextView title2 = new TextView(context);
+			title2.setText("Checking Key...");
+			title2.setTextSize(15);
+			title2.setTextColor(Color.rgb(255, 235, 59));
+			title2.setTypeface(Typeface.DEFAULT_BOLD);
+			title2.setGravity(Gravity.CENTER);
+			title2.setVisibility(View.GONE);
+
+			EditText editTextUser = new EditText(context);
+			if (struser != null && !struser.isEmpty()) {
+				editTextUser.setText(struser);
+			}
+
+			editTextUser.setHintTextColor(Color.BLACK);
+			editTextUser.setTextColor(Color.WHITE);
+			editTextUser.setGravity(Gravity.CENTER);
+			editTextUser.setHint("Enter Key");
+			editTextUser.setHintTextColor(Color.LTGRAY);
+
+			CheckBox checkSaveLogin = new CheckBox(context);
+			checkSaveLogin.setPadding(0, 5, 0, 5);
+			checkSaveLogin.setTextSize(18);
+			checkSaveLogin.setChecked(rememberMe);
+			checkSaveLogin.setTypeface(Typeface.SERIF);
+			checkSaveLogin.setTextColor(Color.WHITE);
+			checkSaveLogin.setText("Save Login");
+
+
+			//Create password edittext field
+
+			LinearLayout linearLayout9 = new LinearLayout(context);
+			linearLayout9.setLayoutParams(new LinearLayout.LayoutParams(-2, -1));
+			linearLayout9.setOrientation(LinearLayout.HORIZONTAL);
+			linearLayout9.setGravity(Gravity.CENTER);
+			//  linearLayout.setBackgroundColor(Color.parseColor("#0098a8"));
+			linearLayout9.setPadding(6, 5, 6, 5);
+
+			LinearLayout linearLayot2 = new LinearLayout(context);
+			linearLayot2.setLayoutParams(new LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+			linearLayot2.setOrientation(LinearLayout.HORIZONTAL);
+			linearLayot2.setGravity(Gravity.CENTER_HORIZONTAL);
+			//  linearLayout.setBackgroundColor(Color.parseColor("#0098a8"));
+			linearLayot2.setPadding(6, 5, 6, 5);
+			//Create btnLogin
+			final Button btnLogin = new Button(context);
+			GradientDrawable var = new GradientDrawable();
+			var.setColor(Color.YELLOW);
+			var.setCornerRadius(15);
+			btnLogin.setBackground(var);
+			btnLogin.setTextColor(Color.rgb(255, 255, 255));
+			btnLogin.setText("Login");
+			btnLogin.setTypeface(Typeface.SERIF);
+			btnLogin.setTextColor(Color.BLACK);
+
+
+			LinearLayout linearLayout2 = new LinearLayout(context);
+			linearLayout2.setOrientation(LinearLayout.VERTICAL);
+			linearLayout2.setGravity(Gravity.CENTER);
+			//  linearLayout2.setBackgroundColor(Color.parseColor("#0098a8"));
+			linearLayout2.setPadding(4, 4, 4, 4);
+
+			//Create btnSair
+			final Button btnTelegram = new Button(context);
+			GradientDrawable var3 = new GradientDrawable();
+			var3.setColor(Color.YELLOW);
+			var3.setCornerRadius(15);
+			btnTelegram.setBackground(var3);
+			btnTelegram.setTextColor(Color.rgb(255, 255, 255));
+			btnTelegram.setText("Get Key");
+			btnTelegram.setTextColor(Color.BLACK);
+			btnTelegram.setTypeface(Typeface.SERIF);
+
+			LinearLayout linearLayout2e = new LinearLayout(context);
+			linearLayout2e.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
+			linearLayout2e.setOrientation(LinearLayout.VERTICAL);
+			linearLayout2e.setGravity(Gravity.CENTER);
+			//  linearLayout2.setBackgroundColor(Color.parseColor("#0098a8"));
+			linearLayout2e.setPadding(4, 4, 4, 4);
+
+
+			/*  final Button btnbuykeys = new Button(context);
+			 GradientDrawable var4 = new GradientDrawable();
+			 var4.setColor(Color.RED);
+			 var4.setCornerRadius(15);
+			 btnbuykeys.setBackground(var4);
+			 btnbuykeys.setTextColor(Color.rgb(255, 255, 255));
+			 btnbuykeys.setText("Buy VIP Key");
+			 btnbuykeys.setTypeface(Typeface.SERIF);
+			 */
+
+			//Create username textView
+
+			//   linearLayout.setPadding(convertDipToPixels(15.0f), convertDipToPixels(15.0f), convertDipToPixels(15.0f), convertDipToPixels(15.0f));
+			final TextView name = new TextView(context);
+			name.setText("NP MODZ || ML+");
+			name.setGravity(Gravity.CENTER);
+			name.setTextColor(Color.YELLOW);
+			name.setTypeface(null, Typeface.BOLD);
+			name.setTextSize(30.0f);
+			name.setBackgroundColor(Color.parseColor("#000000"));
+			LinearLayout.LayoutParams name1 = new LinearLayout.LayoutParams(-1, -1);
+			name1.gravity = 17;
+			android.graphics.drawable.GradientDrawable RAUNAKk1 = new android.graphics.drawable.GradientDrawable();
+			RAUNAKk1.setColor(Color.parseColor("#FF414141"));
+			RAUNAKk1.setCornerRadius(20);
+			RAUNAKk1.setStroke(5, Color.TRANSPARENT);
+			name.setBackground(RAUNAKk1);
+			name.setLayoutParams(name1);
+
+
+
+			//Add views
+			//linearLayout.addView(title);
+			linearLayout.addView(name);
+			linearLayout.addView(title2);
+			linearLayout.addView(editTextUser);
+			//linearLayout.addView(checkSaveLogin);
+			linearLayout.addView(linearLayout9);
+
+			linearLayout9.addView(btnLogin);
+			linearLayout9.addView(linearLayout2);
+			linearLayout9.addView(btnTelegram);
+			linearLayout9.addView(linearLayout2e);
+			//  linearLayout9.addView(btnbuykeys);
+
+
+			//Create alertdialog
+			Builder var7 = new Builder(context);
+			AlertDialog var8 = var7.create();
+			var8.setView(linearLayout);
+			GradientDrawable var34 = new GradientDrawable();
+			var34.setColor(Color.parseColor("#B2000000"));
+			var34.setCornerRadius(20);
+			var34.setStroke(3, Color.parseColor("#FFFFFF"));
+			var8.getWindow().setBackgroundDrawable(var34);
+			var8.setCancelable(false);
+			var8.show();
+
+			final EditText editText3 = editTextUser;
+			final TextView checks = title2;
+			final AlertDialog bubu = var8;
+			final CheckBox check = checkSaveLogin;
+
+
+
+
+			btnLogin.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View view) {					
+						String userKey = editText3.getText().toString();
+						login(context, userKey);			
+						bubu.dismiss();
+
+					}
+				});
+
+			btnTelegram.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+
+					}
+				});
+
+
+		}
+	}
+	static void RemoveUserkey() {
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.remove("USER_KEY");
+        editor.clear();
+        editor.commit();
+    }
+
+    static void login(final Context context, final String user_key) {
+        final ProgressDialog progressDialog = new ProgressDialog(context, 5);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage("ENTERING IN GAME PLEASE WAIT");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 0) { 
+					if (context instanceof Activity) {
+						//Check if context is an Activity.
+						Menu menu = new Menu(context);
+						menu.SetWindowManagerActivity();
+						menu.ShowMenu();
+					} else {
+						//Anything else, ask for permission
+						CheckOverlayPermission(context);
+					}
+					//			mPrefs.edit().putString("USER_KEY", user_key).apply();
+					//	StartFloatingService(context);
+
+                } else if (msg.what == 1) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context, 5);
+                    builder.setTitle("CANT CONNECT TO SERVER.");
+                    builder.setMessage("Wrong Key !!");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                RemoveUserkey();
+								System.exit(0);                             
+                            }
+                        });
+                    builder.show();
+                }
+                progressDialog.dismiss();
+            }
+        };
+
+		new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String result = Check(context, user_key);
+                    if (result.equals("OK")) {
+                        handler.sendEmptyMessage(0);
+                    } else {
+                        Message msg = new Message();
+                        msg.what = 1;
+                        msg.obj = result;
+                        handler.sendMessage(msg);
+                    }
+                }
+            }).start();
+
+
+
+
+
+
+    }
+
+
+    public static void Start(Context context) {
+        CrashHandler.init(context, false);
+
+        CheckOverlayPermission(context);
+    }
+}
+
+
+
+

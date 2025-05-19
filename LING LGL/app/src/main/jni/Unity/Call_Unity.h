@@ -1,0 +1,17 @@
+#include <list>
+#include <vector>
+#include <string>
+#include <string.h>
+#include <pthread.h>
+#include <cstring>
+#include <jni.h>
+#include <unistd.h>
+#include <fstream>
+#include <iostream>
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#include "NPmodz/IL2CppSDKGenerator/Vector2.h"
+#include "NPmodz/IL2CppSDKGenerator/Vector3.h"
+#include "NPmodz/IL2CppSDKGenerator/Rect.h"
+#include "NPmodz/IL2CppSDKGenerator/Quaternion.h"
+#include "ImGui/imgui_internal.h"
